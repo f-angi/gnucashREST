@@ -12,23 +12,21 @@ basePath: "/api"
 
 # Paths supported by the server application
 paths:
-  /people:
+  /transactions:
     get:
-      operationId: "people.read"
+      operationId: "models.transactions.read_all"
       tags:
-        - "People"
-      summary: "The people data structure supported by the server application"
-      description: "Read the list of people"
+        - "Transactions"
       responses:
         200:
-          description: "Successful read people list operation"
+          description: "Successful read transactions list operation"
           schema:
             type: "array"
             items:
               properties:
-                fname:
+                guid:
+                  type: "integer"
+                enter_date:
                   type: "string"
-                lname:
-                  type: "string"
-                timestamp:
+                description:
                   type: "string"

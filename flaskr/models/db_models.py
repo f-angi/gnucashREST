@@ -1,6 +1,7 @@
 # coding: utf-8
 from sqlalchemy import BigInteger, Column, Date, DateTime, Float, Integer, String, Table, text
 from sqlalchemy.ext.declarative import declarative_base
+from config import db
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -339,7 +340,7 @@ class Taxtable(Base):
     parent = Column(String(32))
 
 
-class Transaction(Base):
+class Transaction(db.Model):
     __tablename__ = 'transactions'
 
     guid = Column(String(32), primary_key=True)
@@ -378,4 +379,3 @@ class Version(Base):
 
     table_name = Column(String(50), primary_key=True)
     table_version = Column(Integer, nullable=False)
- 
