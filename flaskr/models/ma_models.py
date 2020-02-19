@@ -1,8 +1,14 @@
-from flaskr.config import db, ma
-from .db_models import Transaction
+from marshmallow import fields, Schema
 
 
-class TransactionSchema(ma.ModelSchema):
-    class Meta:
-        model = Transaction
-        sqla_session = db.session
+# class SplitSchema(Schema):
+#     account = fields.Str()
+#     value = fields.Decimal()
+
+
+class TransactionSchema(Schema):
+    post_date = fields.Date()
+    description = fields.Str()
+    amount = fields.Decimal()
+    account = fields.Str()
+    # splits = fields.List(fields.Nested(SplitSchema))
