@@ -11,19 +11,18 @@ from .ma_models import TransactionSchema
 #     transactions_schema = TransactionSchema(many=True)
 #     return transactions_schema.dump(transactions)
 
+def find_asset(description="", account=""):
+    return _serialize_transactions(PiecashUtil().find_transactions_asset(description, account))
 
-def find(description="", account=""):
-    transactions = PiecashUtil().find_transactions(description)
 
-    for t in transactions:
-        for s in t.splits:
-            if s.value >= 0:
-                t.amount = s.value
-                t.account = s.account.name
+def find_expense(description="", account=""):
+    return _serialize_transactions(PiecashUtil().find_transactions_expense(description, account))
 
-    if account:
-        transactions = [t for t in transactions if account.lower() in t.account.lower()]
 
-    # Serialize the data for the response
+def find_income(description="", account=""):
+    return _serialize_transactions(PiecashUtil().find_transactions_income(description, account))
+
+
+def _serialize_transactions(transactions):
     transactions_schema = TransactionSchema(many=True)
     return transactions_schema.dump(transactions)

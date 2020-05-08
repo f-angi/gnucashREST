@@ -1,37 +1,37 @@
-openapi: 3.0.2
+openapi: 3.0.3
 info:
   description: This is the swagger file that goes with our server code
   version: "1.0.0"
-  title: Swagger REST Article
+  title: Swagger REST GnuCash
 
 servers:
   - url: "/api"
 
 # Paths supported by the server application
 paths:
-#  /transactions:
-#    get:
-#      operationId: "models.transactions.read_all"
-#      tags:
-#        - "Transactions"
-#      responses:
-#        200:
-#          description: "Transactions list operation"
-#          content:
-#            application/json:
-#              schema:
-#                type: "array"
-#                items:
-#                  properties:
-#                    guid:
-#                      type: "string"
-#                    enter_date:
-#                      type: "string"
-#                    description:
-#                      type: "string"
-  /transactions/find:
+  #  /transactions:
+  #    get:
+  #      operationId: "models.transactions.read_all"
+  #      tags:
+  #        - "Transactions"
+  #      responses:
+  #        200:
+  #          description: "Transactions list operation"
+  #          content:
+  #            application/json:
+  #              schema:
+  #                type: "array"
+  #                items:
+  #                  properties:
+  #                    guid:
+  #                      type: "string"
+  #                    enter_date:
+  #                      type: "string"
+  #                    description:
+  #                      type: "string"
+  /transactions/find_asset:
     get:
-      operationId: "models.transactions.find"
+      operationId: "models.transactions.find_asset"
       tags:
         - "Transactions"
       parameters:
@@ -47,16 +47,77 @@ paths:
             type: "string"
       responses:
         200:
-          description: "Transactions find operation"
+          description: "Asset transactions find operation"
           content:
             application/json:
               schema:
                 type: "array"
                 items:
-                  properties:
-                    guid:
-                      type: "string"
-                    enter_date:
-                      type: "string"
-                    description:
-                      type: "string"
+                  $ref: '#/components/schemas/Transaction'
+  /transactions/find_expense:
+    get:
+      operationId: "models.transactions.find_expense"
+      tags:
+        - "Transactions"
+      parameters:
+        - name: "description"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "account"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Expense transactions find operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Transaction'
+  /transactions/find_income:
+    get:
+      operationId: "models.transactions.find_income"
+      tags:
+        - "Transactions"
+      parameters:
+        - name: "description"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "account"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "Income transactions find operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Transaction'
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        guid:
+          type: "string"
+        description:
+          type: "string"
+        date:
+          type: "string"
+        amount:
+          type: "number"
+        account_name:
+          type: "string"
+        account_type:
+          type: "string"

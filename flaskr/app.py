@@ -2,18 +2,20 @@
 Main module of the server file
 """
 
-# 3rd party moudles
-from flask import render_template
+import logging
 
-# local modules
 import config
-
+from flask import render_template
 
 # Get the application instance
 connex_app = config.connex_app
 
 # Read the swagger.yml file to configure the endpoints
 connex_app.add_api("swagger.yml")
+
+logging.basicConfig(filename='logs/app.log', level=logging.DEBUG)
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
 
 # create a URL route in our application for "/"
 @connex_app.route("/")

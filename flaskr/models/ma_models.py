@@ -1,14 +1,20 @@
 from marshmallow import fields, Schema
 
 
-# class SplitSchema(Schema):
-#     account = fields.Str()
-#     value = fields.Decimal()
+class AccountSchema(Schema):
+    name = fields.Str()
+    type = fields.Str()
+
+
+class SplitSchema(Schema):
+    account = fields.Nested(AccountSchema)
+    value = fields.Decimal()
 
 
 class TransactionSchema(Schema):
-    post_date = fields.Date()
-    description = fields.Str()
-    amount = fields.Decimal()
-    account = fields.Str()
-    # splits = fields.List(fields.Nested(SplitSchema))
+    guid = fields.String()
+    description = fields.String()
+    date = fields.Date()
+    amount = fields.Float()
+    account_name = fields.String()
+    account_type = fields.String()
