@@ -1,4 +1,5 @@
-from datetime import datetime
+import datetime
+from decimal import Decimal
 
 from config import app
 from piecash import open_book, Transaction, Account, Split
@@ -14,18 +15,24 @@ class PiecashUtil(object):
     def __init__(self):
         self.book = open_book(uri_conn=self.DB_CONN_STRING, readonly=False, do_backup=False)
 
-    def expense_transaction(self, asset_account_full_name, expense_account_full_name, description, value):
-        today = datetime.now()
+    def new_transaction(self, from_account, to_account, description, value, date=None):
 
-        single_transaction(
-            post_date=today,
-            enter_date=today,
+        post_date = datetime.datetime.strptime(date, '%d%m%y').date() if date else datetime.date.today()
+        enter_date = datetime.datetime.now().replace(microsecond=0)
+        value = Decimal(value).quantize(Decimal('1.00'))
+
+        transaction = single_transaction(
+            post_date=post_date,
+            enter_date=enter_date,
             description=description,
             value=value,
-            from_account=self.book.accounts(fullname=asset_account_full_name),
-            to_account=self.book.accounts(fullname=expense_account_full_name))
+            from_account=self.book.accounts(name=from_account),
+            to_account=self.book.accounts(name=to_account))
 
         self.book.save()
+
+        app.logger.debug("new transaction guid: %s", transaction.guid)
+        return transaction
 
     def find_transactions_asset(self, description="", account_name=""):
         return self._find_transactions(asset_types, description, account_name)

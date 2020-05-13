@@ -9,26 +9,27 @@ servers:
 
 # Paths supported by the server application
 paths:
-  #  /transactions:
-  #    get:
-  #      operationId: "models.transactions.read_all"
-  #      tags:
-  #        - "Transactions"
-  #      responses:
-  #        200:
-  #          description: "Transactions list operation"
-  #          content:
-  #            application/json:
-  #              schema:
-  #                type: "array"
-  #                items:
-  #                  properties:
-  #                    guid:
-  #                      type: "string"
-  #                    enter_date:
-  #                      type: "string"
-  #                    description:
-  #                      type: "string"
+  /transactions:
+    post:
+      operationId: "models.transactions.new"
+      tags:
+        - "Transactions"
+      requestBody:
+        description: "Insert a new transaction"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTransaction'
+      responses:
+        201:
+          description: Created
+          content:
+            text/plain:
+              schema:
+                description: "Transaction guid"
+                type: string
+                example: "3421a33ca15343d08076b2ee5f6e73c9"
   /transactions/find_asset:
     get:
       operationId: "models.transactions.find_asset"
@@ -120,4 +121,22 @@ components:
         account_name:
           type: "string"
         account_type:
+          type: "string"
+    NewTransaction:
+      type: object
+      required:
+        - from_account
+        - to_account
+        - description
+        - amount
+      properties:
+        from_account:
+          type: "string"
+        to_account:
+          type: "string"
+        description:
+          type: "string"
+        amount:
+          type: "number"
+        date:
           type: "string"
